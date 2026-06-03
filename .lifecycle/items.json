@@ -36,8 +36,8 @@
       },
       "code": {
         "specHash": "t7pwrx",
-        "rev": 1,
-        "at": 1780471091364
+        "rev": 2,
+        "at": 1780501056849
       },
       "tests": {
         "specHash": "t7pwrx",
@@ -69,7 +69,7 @@
       }
     },
     "createdAt": 1780465482993,
-    "updatedAt": 1780498646697,
+    "updatedAt": 1780501056849,
     "projectId": "proj-1780488647229-test",
     "appId": "default",
     "changeType": "feature",

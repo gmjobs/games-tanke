@@ -11,7 +11,14 @@
     {
       "appId": "default",
       "name": "default",
-      "kind": "other"
+      "kind": "other",
+      "publish": {
+        "repo": "games-tanke",
+        "pages": true,
+        "repoUrl": "https://github.com/gmjobs/games-tanke",
+        "pagesUrl": "https://gmjobs.github.io/games-tanke/",
+        "pushedAt": 1780499272317
+      }
     },
     {
       "appId": "sdd-games-shenmiaotaowang",
@@ -31,5 +38,5 @@
     }
   ],
   "createdAt": 1780488647229,
-  "updatedAt": 1780491214653
+  "updatedAt": 1780499272317
 }

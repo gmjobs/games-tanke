@@ -1,7 +1,7 @@
 {
-  "name": "temple-run-online",
+  "name": "tank-deluxe",
   "version": "1.0.0",
-  "description": "神庙逃亡在线版 —— 纯前端 Three.js 真 3D 无尽跑酷，浏览器即点即玩",
+  "description": "坦克大战豪华版 —— 纯前端、离线可玩的 Canvas 2D 网格射击游戏",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,10 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "dependencies": {
-    "three": "0.160.0"
-  },
   "devDependencies": {
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.8"
   }
 }
