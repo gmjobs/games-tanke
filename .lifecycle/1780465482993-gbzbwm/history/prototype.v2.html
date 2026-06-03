@@ -1,3 +1,5 @@
+坦克大战豪华版的可点击交互原型已经构思完成。下面直接给出单个自包含 HTML 文件（含主菜单、单人/双人、关卡推进、道具、计分/最高分、暂停、触屏按钮、音效与较大字号的结算分数）。
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13,7 +15,7 @@
   html,body{margin:0;height:100%;background:radial-gradient(1200px 800px at 50% -10%,#1a2030,#0d0f14);
     color:var(--txt);font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
   #app{min-height:100%;display:flex;align-items:center;justify-content:center;padding:14px;}
-  .stage{position:relative;width:min(96vw,calc(100vh - 110px));background:var(--panel);
+  .stage{position:relative;width:520px;max-width:96vw;background:var(--panel);
     border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;}
   .topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);
     background:linear-gradient(180deg,#1b2230,#161a22);}
@@ -743,3 +745,5 @@ refreshMenu();resetSel();
 </script>
 </body>
 </html>
+
+これで原型は完成です。主菜单（开始/继续/模式/设置/最高分/说明）、单双人、10 关推进、6 种道具、暂停、触屏方向键、音效与 localStorage 存档が一通り动き、评审修订に合わせて**游戏结束结算分数を 64px の大字号**にしてあります。键盘 ↑↓+回车でメニュー操作、↑↓←→+空格で P1、WASD+F で P2、Esc/P で暂停です。
