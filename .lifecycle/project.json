@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "proj-1780488647229-test",
+  "name": "test",
+  "slug": "test",
+  "appIds": [
+    "default",
+    "sdd-games-shenmiaotaowang"
+  ],
+  "apps": [
+    {
+      "appId": "default",
+      "name": "default",
+      "kind": "other"
+    },
+    {
+      "appId": "sdd-games-shenmiaotaowang",
+      "name": "sdd-games-shenmiaotaowang",
+      "kind": "frontend"
+    }
+  ],
+  "version": "0.2.0",
+  "versions": [
+    {
+      "version": "0.2.0",
+      "at": 1780491214653,
+      "requirementId": "1780488808081-ku6fm8",
+      "appId": "sdd-games-shenmiaotaowang",
+      "changeType": "feature",
+      "summary": "神庙逃亡"
+    }
+  ],
+  "createdAt": 1780488647229,
+  "updatedAt": 1780491214653
+}

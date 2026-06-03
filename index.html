@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>神庙逃亡 · 在线版</title>
+<style>
+  :root{
+    --gold:#ffcf5c; --gold2:#ff9d2e; --ink:#1a1208; --panel:rgba(18,12,6,.82);
+    --ok:#7CFFB2; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0a0d14;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:#fff; user-select:none; touch-action:none;}
+  #wrap{position:fixed;inset:0;}
+  canvas{display:block;width:100%;height:100%;}
+
+  /* ---------- HUD ---------- */
+  #hud{position:absolute;inset:0;pointer-events:none;z-index:5;}
+  .topbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+    align-items:flex-start;padding:14px 16px;gap:10px;}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{background:var(--panel);backdrop-filter:blur(6px);border:1px solid rgba(255,207,92,.25);
+    border-radius:12px;padding:8px 12px;min-width:74px;box-shadow:0 4px 14px rgba(0,0,0,.35);}
+  .chip .k{font-size:10px;letter-spacing:.12em;color:#caa86a;text-transform:uppercase;}
+  .chip .v{font-size:20px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums;}
+  .chip .v small{font-size:12px;font-weight:600;color:#cbb58a;}
+  .coinchip .v{color:var(--gold);}
+  .btn{pointer-events:auto;cursor:pointer;background:var(--panel);border:1px solid rgba(255,207,92,.3);
+    color:#fff;border-radius:12px;width:46px;height:46px;display:grid;place-items:center;font-size:20px;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .08s, background .15s;}
+  .btn:active{transform:scale(.92);}
+  #fps{position:absolute;left:16px;bottom:14px;font-size:11px;color:#9fe6b5;background:rgba(0,0,0,.35);
+    padding:3px 8px;border-radius:8px;font-variant-numeric:tabular-nums;display:none;}
+  #fps.on{display:block;}
+  .flash{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);font-size:clamp(28px,9vw,72px);
+    font-weight:900;color:var(--gold);text-shadow:0 4px 0 #9a5a10,0 0 26px rgba(255,180,60,.7);
+    opacity:0;pointer-events:none;letter-spacing:.04em;}
+
+  /* ---------- Overlays ---------- */
+  .overlay{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:radial-gradient(120% 120% at 50% 0%,rgba(30,20,8,.35),rgba(4,6,12,.78));
+    backdrop-filter:blur(3px);}
+  .overlay.hidden{display:none;}
+  .card{width:min(440px,92vw);background:linear-gradient(180deg,rgba(26,18,8,.92),rgba(12,9,5,.94));
+    border:1px solid rgba(255,207,92,.3);border-radius:22px;padding:26px 24px 22px;text-align:center;
+    box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);}
+  .logo{font-size:clamp(30px,8vw,46px);font-weight:900;letter-spacing:.02em;line-height:1;
+    background:linear-gradient(180deg,#fff3cf,var(--gold) 45%,var(--gold2));-webkit-background-clip:text;
+    background-clip:text;color:transparent;text-shadow:0 2px 0 rgba(0,0,0,.2);}
+  .sub{margin-top:6px;color:#c9b387;font-size:13px;letter-spacing:.18em;text-transform:uppercase;}
+  .help{margin:18px 0 8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;}
+  .help div{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;
+    padding:8px 10px;font-size:12.5px;color:#e8ddc6;display:flex;gap:8px;align-items:center;}
+  .help b{display:inline-grid;place-items:center;min-width:48px;height:24px;padding:0 7px;border-radius:7px;
+    background:rgba(255,207,92,.16);border:1px solid rgba(255,207,92,.35);color:var(--gold);font-size:11px;
+    font-weight:700;white-space:nowrap;}
+  .cta{margin-top:14px;width:100%;border:none;cursor:pointer;border-radius:14px;padding:15px;
+    font-size:18px;font-weight:800;color:#3a2406;background:linear-gradient(180deg,#ffe49a,var(--gold) 55%,var(--gold2));
+    box-shadow:0 10px 24px rgba(255,150,40,.35),inset 0 1px 0 rgba(255,255,255,.5);
+    transition:transform .08s, filter .15s;}
+  .cta:active{transform:translateY(2px) scale(.99);}
+  .cta:disabled{filter:grayscale(.7) brightness(.7);cursor:default;}
+  .ghost{margin-top:10px;background:transparent;border:1px solid rgba(255,255,255,.18);color:#e8ddc6;
+    border-radius:12px;padding:11px;width:100%;font-size:14px;font-weight:600;cursor:pointer;}
+  .ghost:active{transform:scale(.99);}
+  .loadbar{height:10px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:18px;}
+  .loadfill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));
+    transition:width .12s linear;}
+  .loadtxt{font-size:12px;color:#c9b387;margin-top:8px;letter-spacing:.1em;}
+  .scoreRow{display:flex;justify-content:center;gap:14px;margin:16px 0 4px;}
+  .scoreRow .box{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;padding:12px 8px;}
+  .scoreRow .box .k{font-size:11px;color:#c9b387;letter-spacing:.1em;}
+  .scoreRow .box .v{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;}
+  .newbest{color:var(--ok);font-weight:800;font-size:14px;margin-top:6px;display:none;}
+  .newbest.show{display:block;animation:pop .5s ease;}
+  .row{display:flex;gap:8px;}
+  .row .ghost{flex:1;margin-top:10px;}
+  .seg{display:inline-flex;border:1px solid rgba(255,207,92,.3);border-radius:10px;overflow:hidden;margin-top:6px;}
+  .seg button{background:transparent;border:none;color:#cbb58a;padding:7px 12px;font-size:12px;cursor:pointer;font-weight:600;}
+  .seg button.active{background:rgba(255,207,92,.22);color:#fff;}
+  .opts{display:flex;justify-content:center;gap:18px;align-items:center;margin-top:14px;flex-wrap:wrap;}
+  .opts label{font-size:12px;color:#c9b387;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+  #warn{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:30;
+    background:#0a0d14;text-align:center;padding:30px;color:#ffd; font-size:15px;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div class="topbar">
+      <div class="stats">
+        <div class="chip"><div class="k">距离</div><div class="v" id="hDist">0<small> m</small></div></div>
+        <div class="chip coinchip"><div class="k">金币</div><div class="v" id="hCoin">0</div></div>
+        <div class="chip"><div class="k">分数</div><div class="v" id="hScore">0</div></div>
+      </div>
+      <button class="btn" id="pauseBtn" title="暂停 (P)">⏸</button>
+    </div>
+    <div class="flash" id="flash"></div>
+    <div id="fps">FPS --</div>
+  </div>
+
+  <!-- 开始 / 加载 -->
+  <div class="overlay" id="menu">
+    <div class="card">
+      <div class="logo">神庙逃亡</div>
+      <div class="sub">Temple Run · 在线版</div>
+      <div class="help">
+        <div><b>← →</b> 左右变道</div>
+        <div><b>↑ / 空格</b> 跳跃</div>
+        <div><b>↓</b> 滑铲</div>
+        <div><b>触屏滑动</b> 四向操作</div>
+        <div><b>路口箭头</b> 按提示转向</div>
+        <div><b>P</b> 暂停 / 继续</div>
+      </div>
+      <div id="loadWrap">
+        <div class="loadbar"><div class="loadfill" id="loadfill"></div></div>
+        <div class="loadtxt" id="loadtxt">资源加载中… 0%</div>
+      </div>
+      <button class="cta" id="startBtn" disabled>加载中…</button>
+      <div class="opts">
+        <label>画质
+          <span class="seg" id="qSeg">
+            <button data-q="high" class="active">高</button>
+            <button data-q="low">流畅</button>
+          </span>
+        </label>
+        <label>音效
+          <span class="seg" id="sSeg">
+            <button data-s="on" class="active">开</button>
+            <button data-s="off">关</button>
+          </span>
+        </label>
+        <label>帧率
+          <span class="seg" id="fSeg">
+            <button data-f="off" class="active">隐藏</button>
+            <button data-f="on">显示</button>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 暂停 -->
+  <div class="overlay hidden" id="pause">
+    <div class="card">
+      <div class="logo" style="font-size:34px">已暂停</div>
+      <div class="sub">PAUSED</div>
+      <div class="scoreRow">
+        <div class="box"><div class="k">距离</div><div class="v" id="pDist">0</div></div>
+        <div class="box"><div class="k">金币</div><div class="v" id="pCoin" style="color:var(--gold)">0</div></div>
+      </div>
+      <button class="cta" id="resumeBtn">继续游戏</button>
+      <button class="ghost" id="quitBtn">退出本局</button>
+    </div>
+  </div>
+
+  <!-- 结算 -->
+  <div class="overlay hidden" id="over">
+    <div class="card">
+      <div class="logo" style="font-size:34px">本局结束</div>
+      <div class="sub" id="overReason">GAME OVER</div>
+      <div class="newbest" id="newbest">🏆 新纪录！</div>
+      <div class="scoreRow">
+        <div class="box"><div class="k">分数</div><div class="v" id="oScore">0</div></div>
+        <div class="box"><div class="k">距离</div><div class="v" id="oDist">0</div></div>
+        <div class="box"><div class="k">金币</div><div class="v" id="oCoin" style="color:var(--gold)">0</div></div>
+      </div>
+      <div class="loadtxt" style="margin-top:10px">历史最高分：<b id="oBest" style="color:var(--gold)">0</b></div>
+      <button class="cta" id="restartBtn">再来一局</button>
+      <button class="ghost" id="homeBtn">返回首页</button>
+    </div>
+  </div>
+
+  <div id="warn">您的浏览器画布渲染不可用，请使用最新版 Chrome / Edge / Safari / Firefox 重试。</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/addons/"
+  }
+}
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

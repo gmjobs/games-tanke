@@ -1,0 +1,6 @@
+{
+  "lifecycle.devVerifyCommand": "npm install && npm test",
+  "lifecycle.maxFixAttempts": 2,
+  "lifecycle.devRunCommand": "PORT=5199 npm run dev",
+  "lifecycle.devPreviewUrl": "http://localhost:5199"
+}

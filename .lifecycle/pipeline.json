@@ -1,0 +1,96 @@
+{
+  "id": "default",
+  "version": 1,
+  "stages": [
+    {
+      "id": "需求",
+      "name": "需求"
+    },
+    {
+      "id": "产品",
+      "name": "产品",
+      "actions": [
+        {
+          "type": "ai.generate",
+          "kind": "spec"
+        },
+        {
+          "type": "ai.generate",
+          "kind": "prototype"
+        },
+        {
+          "type": "ai.generate",
+          "kind": "acceptance"
+        }
+      ],
+      "gate": {
+        "kind": "review",
+        "approvers": [
+          "role:product"
+        ]
+      }
+    },
+    {
+      "id": "研发",
+      "name": "研发",
+      "actions": [
+        {
+          "type": "ai.generate",
+          "kind": "design"
+        },
+        {
+          "type": "ai.generate",
+          "kind": "code"
+        },
+        {
+          "type": "ai.generate",
+          "kind": "tests"
+        },
+        {
+          "type": "ai.generate",
+          "kind": "trace"
+        }
+      ],
+      "gate": {
+        "kind": "review",
+        "approvers": [
+          "role:architect"
+        ]
+      }
+    },
+    {
+      "id": "测试",
+      "name": "测试",
+      "gate": {
+        "kind": "review",
+        "approvers": [
+          "role:qa"
+        ]
+      }
+    },
+    {
+      "id": "发布",
+      "name": "发布"
+    },
+    {
+      "id": "运维",
+      "name": "运维"
+    },
+    {
+      "id": "完成",
+      "name": "完成"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "simple",
+      "name": "简单（一键）",
+      "autoGates": true
+    },
+    {
+      "id": "standard",
+      "name": "标准",
+      "autoGates": false
+    }
+  ]
+}

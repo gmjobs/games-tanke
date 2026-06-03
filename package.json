@@ -1,0 +1,20 @@
+{
+  "name": "temple-run-online",
+  "version": "1.0.0",
+  "description": "神庙逃亡在线版 —— 纯前端 Three.js 真 3D 无尽跑酷，浏览器即点即玩",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node serve.js",
+    "start": "node serve.js",
+    "build": "node build.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  }
+}
