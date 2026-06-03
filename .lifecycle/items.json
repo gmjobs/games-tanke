@@ -69,11 +69,15 @@
       }
     },
     "createdAt": 1780465482993,
-    "updatedAt": 1780472277502,
+    "updatedAt": 1780498646697,
     "projectId": "proj-1780488647229-test",
     "appId": "default",
     "changeType": "feature",
-    "rev": 1
+    "rev": 1,
+    "publish": {
+      "repo": "games-tanke",
+      "pages": true
+    }
   },
   {
     "id": "1780488808081-ku6fm8",
@@ -159,14 +163,43 @@
       }
     ],
     "createdAt": 1780488808081,
-    "updatedAt": 1780491214635,
+    "updatedAt": 1780491686111,
     "projectId": "proj-1780488647229-test",
     "appId": "sdd-games-shenmiaotaowang",
     "changeType": "feature",
     "rev": 1,
     "publish": {
       "repo": "games-shenmiaotaowang",
-      "pages": true
+      "pages": true,
+      "repoUrl": "https://github.com/gmjobs/games-shenmiaotaowang",
+      "pagesUrl": "https://gmjobs.github.io/games-shenmiaotaowang/",
+      "pushedAt": 1780491686111
     }
+  },
+  {
+    "id": "1780492507084-7x7ohy",
+    "title": "游戏控制精度问题，问题链接https://gmjobs.github.io/games-shenmiaotaowang/",
+    "description": "",
+    "spec": "",
+    "stage": "需求",
+    "artifacts": {},
+    "artifactMeta": {},
+    "profile": "simple",
+    "gateStates": {},
+    "stageLog": [
+      {
+        "stage": "需求",
+        "at": 1780492507084
+      }
+    ],
+    "createdAt": 1780492507084,
+    "updatedAt": 1780492507084,
+    "projectId": "proj-1780488647229-test",
+    "appId": "sdd-games-shenmiaotaowang",
+    "changeType": "modify",
+    "targetFeatureIds": [
+      "1780488808081-ku6fm8"
+    ],
+    "rev": 1
   }
 ]
